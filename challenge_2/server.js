@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const PORT = 3333;
+const PORT = process.env.PORT || 3333;
 const redis = require("redis");
 const axios = require('axios');
 const port_redis = process.env.PORT || 6379;
@@ -19,13 +19,12 @@ app.use(bodyParser.json());
 //Middleware Function to Check Cache
 checkCache = (req, res, next) => {
   const { end } = req.query;
-
   redis_client.get(end, (err, data) => {
     if (err) {
       console.log(err);
       res.status(500).send(err);
     }
-    if (data != null) {
+    if (data != null && req.query.cache === 'true') {
       console.log('CACHE HIT ON DATE', end);
       res.send(data);
     } else {

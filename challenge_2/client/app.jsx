@@ -4,7 +4,6 @@ import axios from 'axios';
 import Chart from './Chart.jsx';
 import { TypeChooser } from 'react-stockcharts/lib/helper';
 
-
 const App = () => {
 
   const [rates, setRates] = React.useState({});
@@ -38,8 +37,6 @@ const App = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(e.target.date.value);
-
     var d = new Date(e.target.date.value);
     const end = d.toLocaleDateString('sv');
     d.setDate(d.getDate() - 30);
@@ -48,14 +45,11 @@ const App = () => {
     axios.get('/api/rates/',{
       params: {
         start: start,
-        end: end
+        end: end,
+        cache: e.target.cache.checked
       }
     })
       .then((res) => {
-        console.log('DATA',res.data);
-
-        // fix data for charts
-        // [{date: date, close: close},{date: date, close: close}...]
         let list = Object.entries(res.data.bpi);
         const entries = list.map((entry)=>{
           var temp = {};
@@ -63,9 +57,6 @@ const App = () => {
           temp.close = entry[1];
           return temp;
         });
-
-        console.log('Entries', entries);
-
         setDisclaimer(res.data.disclaimer);
         setTime(res.data.time.updated);
         setRates(entries);
@@ -78,27 +69,32 @@ const App = () => {
   if(!rates.length) {
     return (
       <div>
-        <h1>Bitcoin Price Index</h1>
-        <h3>Enter a date to get data from date selected to 30 days before.</h3>
+        <h2>BITCOIN PRICE INDEX</h2>
+        <p>Enter a date to get 30 days of previous data.</p>
           <form onSubmit={handleSubmit}>
             <input type="date" name="date"/>
+            <input type="checkbox" id="cache" name="cache" />
+            <label htmlFor="cache">cached search   </label>
             <button type="submit">Submit</button>
           </form>
+
       </div>
     )
   }
 
   return (
     <div>
-    <h1>Bitcoin Price Index</h1>
-    <h3>Enter a date to get 30 days of data prior to entered date.</h3>
+    <h2>BITCOIN PRICE INDEX</h2>
+    <p>Enter a date to get 30 days of previous data.</p>
       <form onSubmit={handleSubmit}>
         <input type="date" name="date"/>
+        <input type="checkbox" id="cache" name="cache" />
+        <label htmlFor="cache">cached search   </label>
         <button type="submit">Submit</button>
       </form>
-  <h2>{time}</h2>
-  <h3>{disclaimer}</h3>
 
+    <h3>{time}</h3>
+    <p>{disclaimer}</p>
     <TypeChooser>
       {type => <Chart type={type} data={rates} />}
     </TypeChooser>

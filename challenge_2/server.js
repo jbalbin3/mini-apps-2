@@ -3,7 +3,7 @@ const app = express();
 const PORT = process.env.PORT || 3333;
 const redis = require("redis");
 const axios = require('axios');
-const port_redis = process.env.PORT || 6379;
+const port_redis = process.env.REDIS_URL || 6379;
 const redis_client = redis.createClient(port_redis);
 const bodyParser = require("body-parser");
 

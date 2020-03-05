@@ -10,6 +10,10 @@
     "build": "webpack -p",
     "build:dev": "webpack -d --watch"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jbalbin3/hrr43-mini-apps-2/tree/master/challenge_2.git"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

@@ -1,8 +1,19 @@
 import React from 'react';
 
-const PinsSelection = () =>{
+const PinsSelection = ({ pinsHit, pinLimit }) =>{
+
+  console.log('pinLimit', pinLimit);
+
+  var max = pinLimit || 10;
+  var list = [...Array(max+1).keys()].map((num)=>
+      <button key={num} value={num} onClick={ pinsHit }>{num}</button>
+  )
+
   return (
-    <div>1 2 3 4 5 6 7 8 9 10</div>
+    <div>
+      <h5>click on a pin</h5>
+      {list}
+    </div>
   )
 }
 

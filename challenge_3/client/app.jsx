@@ -82,11 +82,22 @@ const App = () => {
     if(game[frameNum.toString()].length === 2) {
       if(game[frameNum.toString()][0] + game[frameNum.toString()][1] === 10) {
         showScore = '/';
+        var temp = frameScore;
+        temp[frameNum.toString()] = (() => {
+          var sum = temp[(frameNum-1).toString()] ?
+          temp[(frameNum-1).toString()]() + game[frameNum.toString()][0] + game[frameNum.toString()][1] :
+          game[frameNum.toString()][0] + game[frameNum.toString()][1];
+          return ()=>sum ;
+        })();
+        setFrameScore(temp);
       } else {
         var temp = frameScore;
         console.log('temp1',temp);
         temp[frameNum.toString()] = (() => {
-          var sum = game[frameNum.toString()][0] + game[frameNum.toString()][1]; return ()=>sum;
+          var sum = temp[(frameNum-1).toString()] ?
+          temp[(frameNum-1).toString()]() + game[frameNum.toString()][0] + game[frameNum.toString()][1] :
+          game[frameNum.toString()][0] + game[frameNum.toString()][1];
+          return ()=>sum;
         })();
         console.log('temp2',temp);
         setFrameScore(temp);
@@ -108,7 +119,13 @@ const App = () => {
 
   if(gameOver) {
     return (
-      <div>game over</div>
+      <div>
+        <Title>
+          Bowling fun!
+        </Title>
+          <ScoreCard score={score} frameScore={frameScore} />
+        <div>game over</div>
+      </div>
     )
   }
 

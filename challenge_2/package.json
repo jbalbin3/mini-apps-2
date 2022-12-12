@@ -24,7 +24,7 @@
     "d3-format": "^1.4.3",
     "d3-scale": "^3.2.1",
     "d3-time-format": "^2.2.3",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "nodemon": "^2.0.2",
     "prop-types": "^15.7.2",
     "react": "^16.13.0",
